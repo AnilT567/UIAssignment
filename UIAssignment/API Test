@@ -1,0 +1,22 @@
+Curl to export in postman
+
+curl --location 'https://v6.exchangerate-api.com/v6/1fc80820c72b0163bc9c7536/latest/USD' 
+
+and Below code need to paste in Tests in postman
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+var jsonData=JSON.parse(responseBody);
+var conversionRates = jsonData.conversion_rates;
+//var totalCurrencies=conversionRates.length;
+var totalCurrencies = Object.keys(conversionRates).length;
+
+console.log("Total number of currencies:", totalCurrencies);
+pm.test("Total number of currencies:",totalCurrencies);
+pm.test("Total number of currencies is correct", function() {
+    pm.expect(totalCurrencies).to.be.eql(162);
+});
+pm.test("Currency GBP is shown within the response", function() {
+    pm.expect(conversionRates).to.have.property('GBP');
+});
